@@ -4,13 +4,18 @@ const morgan = require("morgan");
 const createError = require("http-errors");
 require('./helpers/mongo_init');
 const authRouter = require('./routes/Auth-route');
+const productRouter = require("./routes/products");
+const orderProducts = require('./routes/order');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'));
 app.use('/auth', authRouter);
+app.use('/order', orderProducts);
+app.use('/product', productRouter);
 
 //handling CORS
 app.use((req, res, next) => {
@@ -34,7 +39,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`server on in port ${port}`);
 });

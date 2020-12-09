@@ -6,7 +6,8 @@ const User = mongoose.model('User', new mongoose.Schema({
         type: String,
         unique: true,
         lowercase: true,
-        required:true
+        required: true,
+        match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
     password: {
         type: String,
@@ -14,15 +15,4 @@ const User = mongoose.model('User', new mongoose.Schema({
     }
 }));
 
-function validateUser(user) {
-    
-    const schema = Joi.object({ 
-        email: Joi.string().email().min(6).required(),
-        password: Joi.string().min(6).required(),
-    });
-
-    return schema.validateAsync(user);
-}
-
 exports.User =User;
-exports.validate = validateUser;
